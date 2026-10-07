@@ -5,6 +5,7 @@ namespace App\Repositories\StudentInfo;
 use Exception;
 use App\Traits\ReturnFormatTrait;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Cache;
 use App\Models\WebsiteSetup\OnlineAdmissionSetting;
 use App\Models\StudentInfo\OnlineAdmissionFeesAssign;
 
@@ -84,6 +85,9 @@ class OnlineAdmissionSettingRepository {
             }
           }
 
+            Cache::forget('online_admission_setting');
+            Cache::forget('online_admission_field_is_show');
+            Cache::forget('online_admission_field_is_require');
 
             return $this->responseWithSuccess(___('alert.created_successfully'), []);
 

@@ -13,7 +13,7 @@ return [
     |
     */
 
-    'default' => env('FILESYSTEM_DISK', 's3'),
+    'default' => env('FILESYSTEM_DISK', 'local'),
 
     /*
     |--------------------------------------------------------------------------
@@ -38,7 +38,11 @@ return [
 
         'public' => [
             'driver' => 'local',
-            'root' => storage_path('app/public'),
+            // On shared hosting (no symlink/exec), set STORAGE_DIRECT_PUBLIC=true in .env
+            // so files are stored directly in public/storage — no `storage:link` required.
+            'root' => env('STORAGE_DIRECT_PUBLIC', false)
+                ? public_path('storage')
+                : storage_path('app/public'),
             'url' => env('APP_URL').'/storage',
             'visibility' => 'public',
             'throw' => false,

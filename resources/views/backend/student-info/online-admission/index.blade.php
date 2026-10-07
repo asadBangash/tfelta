@@ -98,7 +98,7 @@
                                     <th class="purchase">{{ ___('student_info.mobile') }}</th>
                                     <th class="purchase">{{ ___('student_info.guardian_name') }}</th>
                                     <th class="purchase">{{ ___('student_info.guardian_mobile') }}</th>
-                                    @if (hasPermission('student_update') || hasPermission('student_delete'))
+                                    @if (hasPermission('admission_read') || hasPermission('admission_update') || hasPermission('admission_delete'))
                                         <th class="action">{{ ___('common.action') }}</th>
                                     @endif
                                 </tr>
@@ -113,7 +113,7 @@
                                     <td>{{ @$row->phone }}</td>
                                     <td>{{ @$row->guardian_name }}</td>
                                     <td>{{ @$row->guardian_phone }}</td>
-                                    @if (hasPermission('student_update') || hasPermission('student_delete'))
+                                    @if (hasPermission('admission_read') || hasPermission('admission_update') || hasPermission('admission_delete'))
                                         <td class="action">
                                             <div class="dropdown dropdown-action">
                                                 <button type="button" class="btn-dropdown" data-bs-toggle="dropdown"
@@ -121,7 +121,16 @@
                                                     <i class="fa-solid fa-ellipsis"></i>
                                                 </button>
                                                 <ul class="dropdown-menu dropdown-menu-end ">
-                                                    @if (hasPermission('student_update'))
+                                                    @if (hasPermission('admission_read'))
+                                                        <li>
+                                                            <a class="dropdown-item"
+                                                                href="{{ route('online-admissions.download', @$row->id) }}"
+                                                                target="_blank"><span class="icon mr-8"><i
+                                                                        class="fa-solid fa-file-pdf"></i></span>
+                                                                {{ ___('common.download') }}</a>
+                                                        </li>
+                                                    @endif
+                                                    @if (hasPermission('admission_update'))
                                                         <li>
                                                             <a class="dropdown-item"
                                                                 href="{{ route('online-admissions.edit', @$row->id) }}"><span
@@ -130,7 +139,7 @@
                                                                 {{ ___('common.edit') }}</a>
                                                         </li>
                                                     @endif
-                                                    @if (hasPermission('student_delete'))
+                                                    @if (hasPermission('admission_delete'))
                                                         <li>
                                                             <a class="dropdown-item" href="javascript:void(0);"
                                                                 onclick="delete_row('online-admissions/delete', {{ @$row->id }})">

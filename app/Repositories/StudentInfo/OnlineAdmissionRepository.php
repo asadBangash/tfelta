@@ -151,7 +151,7 @@ class OnlineAdmissionRepository implements OnlineAdmissionInterface
             $row->dob                  = $request->date_of_birth;
             $row->religion_id          = $request->religion != ""? $request->religion :  NULL;
             $row->gender_id            = $request->gender != ""? $request->gender :  NULL;
-            $row->blood_group_id       = $request->blood != ""? $request->blood :  NULL;
+            $row->blood_group_id       = $request->blood != "" ? $request->blood : ($admission->blood_group_id ?: null);
             $row->admission_date       = $request->admission_date;
             $row->parent_guardian_id   = $parent->id;
             $row->student_category_id  = $request->category != ""? $request->category :  NULL;

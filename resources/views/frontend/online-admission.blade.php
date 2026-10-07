@@ -149,14 +149,18 @@
                                     </div>
                                 @endif
 
-                                @if (is_show('cpr_no'))
+                                @if (is_show('student_cnic_form_b'))
                                     <div class="col-xl-6">
-                                        <label class="primary_label2">{{ ___('frontend.CPR_Number') }} @if (is_required('cpr_no'))
+                                        <label class="primary_label2">{{ ___('frontend.student_cnic_form_b') }} @if (is_required('student_cnic_form_b'))
                                                 <span class="text-danger">*</span>
                                             @endif </label>
-                                        <input name="cpr_no" placeholder="{{ ___('frontend.CPR_Number') }}"
+                                        <input name="cpr_no" placeholder="{{ ___('frontend.student_cnic_form_b') }}"
                                             class="email form-control ot-input mb_30" type="text"
-                                            @if (is_required('cpr_no')) required @endif>
+                                            value="{{ old('cpr_no') }}"
+                                            @if (is_required('student_cnic_form_b')) required @endif>
+                                        @error('cpr_no')
+                                            <small class="text-danger">{{ $message }}</small>
+                                        @enderror
                                     </div>
                                 @endif
 
@@ -313,6 +317,8 @@
                                         @endif
                                     </div>
                                 @endif
+
+                                @include('frontend.partials.online-admission-extra-fields')
 
                                 @if (is_show('religion'))
                                     <div class="col-xl-6 mb_24">
@@ -689,6 +695,8 @@
                                     </div>
                                 @endif
                                 {{-- </div> --}}
+
+                                @include('frontend.partials.online-admission-acknowledgments')
 
                                 <div class="col-xl-12 text-left d-flex">
                                     <button type="submit"

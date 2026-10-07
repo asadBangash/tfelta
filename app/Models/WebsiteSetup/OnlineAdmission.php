@@ -3,8 +3,13 @@
 namespace App\Models\WebsiteSetup;
 
 use App\Models\Upload;
+use App\Models\Session;
+use App\Models\BloodGroup;
+use App\Models\Academic\Shift;
 use App\Models\Academic\Classes;
 use App\Models\Academic\Section;
+use App\Models\Gender;
+use App\Models\Religion;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\StudentInfo\OnlineAdmissionFeesAssign;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -15,7 +20,33 @@ class OnlineAdmission extends Model
 
     protected $casts = [
         'upload_documents' => 'array',
+        'selected_courses' => 'array',
     ];
+
+    public function session()
+    {
+        return $this->belongsTo(Session::class, 'session_id', 'id');
+    }
+
+    public function shift()
+    {
+        return $this->belongsTo(Shift::class, 'shift_id', 'id');
+    }
+
+    public function gender()
+    {
+        return $this->belongsTo(Gender::class, 'gender_id', 'id');
+    }
+
+    public function religion()
+    {
+        return $this->belongsTo(Religion::class, 'religion_id', 'id');
+    }
+
+    public function blood()
+    {
+        return $this->belongsTo(BloodGroup::class, 'blood_group_id', 'id');
+    }
 
     public function class()
     {

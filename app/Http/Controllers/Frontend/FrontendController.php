@@ -17,6 +17,7 @@ use App\Http\Requests\Frontend\SearchResultRequest;
 use App\Repositories\Academic\ShiftRepository;
 use App\Repositories\StudentInfo\StudentRepository;
 use App\Repositories\StudentInfo\OnlineAdmissionSettingRepository;
+use App\Repositories\BloodGroupRepository;
 
 class FrontendController extends Controller
 {
@@ -28,6 +29,7 @@ class FrontendController extends Controller
     private $pageRepo;
     private $admission_setting_repo;
     private $shift_repo;
+    private $bloodRepo;
 
     function __construct(
         FrontendRepository $repo,
@@ -38,6 +40,7 @@ class FrontendController extends Controller
         PageRepository      $pageRepo,
         OnlineAdmissionSettingRepository      $admission_setting_repo,
         ShiftRepository      $shift_repo,
+        BloodGroupRepository $bloodRepo,
     )
     {
         if (!Schema::hasTable('settings') && !Schema::hasTable('users'))
@@ -50,6 +53,7 @@ class FrontendController extends Controller
         $this->pageRepo        = $pageRepo;
         $this->admission_setting_repo        = $admission_setting_repo;
         $this->shift_repo        = $shift_repo;
+        $this->bloodRepo         = $bloodRepo;
     }
 
     public function index()
@@ -183,6 +187,7 @@ class FrontendController extends Controller
         $data['religions']= $this->religionRepo->all();
         $data['genders']  = $this->genderRepo->all();
         $data['shifts']  = $this->shift_repo->all();
+        $data['bloods']  = $this->bloodRepo->all();
         $data['setting']  = $this->admission_setting_repo->getIsShowByType('online_admission');
         return view('frontend.online-admission', compact('data'));
     }
@@ -204,6 +209,11 @@ class FrontendController extends Controller
 
     public function storeOnlineAdmission(Request $request) {
 
+        $validator = Validator::make($request->all(), $this->onlineAdmissionValidationRules());
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
+
         $admission = $this->repo->onlineAdmission($request);
         $fees = $this->repo->onlineAdmissionFees($admission->session_id, $admission->classes_id , $admission->section_id);
         $payment_setting = $this->admission_setting_repo->getOneByFied('admission_payment');
@@ -215,6 +225,27 @@ class FrontendController extends Controller
 
     }
 
+
+    protected function onlineAdmissionValidationRules(): array
+    {
+        $rules = [];
+
+        if (is_required('student_cnic_form_b')) {
+            $rules['cpr_no'] = 'required|string|max:50';
+        } elseif (is_show('student_cnic_form_b')) {
+            $rules['cpr_no'] = 'nullable|string|max:50';
+        }
+
+        if (is_show('admission_declaration_ack') && is_required('admission_declaration_ack')) {
+            $rules['admission_declaration_ack'] = 'accepted';
+        }
+
+        if (is_show('admission_rules_ack') && is_required('admission_rules_ack')) {
+            $rules['admission_rules_ack'] = 'accepted';
+        }
+
+        return $rules;
+    }
 
     public function storeOnlineAdmissionFees(Request $request) {
         $validator = Validator::make($request->all(), [

@@ -75,6 +75,84 @@ Change this password immediately after first login.
 
 **Do not import the bundled SQL dumps.** The schema is created entirely from Laravel migrations.
 
+## Shared Hosting (no exec / proc_open / symlinks)
+
+Hostinger and similar hosts often disable `exec()`, `proc_open`, and PHP `symlink()`.
+You do **not** need `php artisan storage:link` if you follow this workflow.
+
+### 1. Composer (skip post-install scripts)
+
+```bash
+composer install --no-dev --optimize-autoloader --no-scripts
+php artisan package:discover --ansi
+```
+
+If `package:discover` also fails, run `composer install` on your **local PC** and upload
+the whole project including `vendor/` and `bootstrap/cache/packages.php` + `services.php`.
+
+### 2. `.env` for shared hosting
+
+```env
+FILESYSTEM_DISK=local
+STORAGE_DIRECT_PUBLIC=true
+APP_ENV=production
+APP_DEBUG=false
+```
+
+`STORAGE_DIRECT_PUBLIC=true` stores public files in `public/storage/` directly — no symlink.
+
+### 3. Create folders (instead of storage:link)
+
+```bash
+php scripts/create-storage-dirs.php
+```
+
+This only uses `mkdir()` — no exec, no symlinks.
+
+### 4. Database setup from your local PC
+
+On Laragon, temporarily point `.env` to the **live database**, then run:
+
+```bash
+php artisan app:setup --fresh
+```
+
+Restore local DB settings afterward. This avoids running migrations on the restricted server.
+
+Alternatively, if `php artisan migrate` works on the server (it often does even when
+`storage:link` fails), run:
+
+```bash
+php artisan app:setup --fresh
+```
+
+### 5. APP_KEY without artisan (if needed)
+
+Local:
+
+```bash
+php artisan key:generate --show
+```
+
+Copy the output into the server `.env` as `APP_KEY=base64:...`
+
+### 6. Permissions
+
+Ensure these are writable (775 or 755 depending on host):
+
+- `storage/`
+- `bootstrap/cache/`
+- `public/storage/`
+- `public/backend/uploads/`
+
+### 7. Do NOT run on shared hosting
+
+| Command | Alternative |
+|---------|-------------|
+| `php artisan storage:link` | Set `STORAGE_DIRECT_PUBLIC=true` + run `scripts/create-storage-dirs.php` |
+| `composer update` | Never on server; use `composer install` from lock file |
+| Shell symlink `ln -s` | Not needed with `STORAGE_DIRECT_PUBLIC=true` |
+
 ## Notes
 
 - The web installer at `/install` is bypassed once migrations have run and the `users` table exists.

@@ -20,7 +20,7 @@
     <link rel="stylesheet" href="{{global_asset('frontend')}}/css/owl.carousel.min.css">
     <link rel="stylesheet" href="{{global_asset('frontend')}}/css/owl.carousel.min.css">
     <link rel="stylesheet" href="{{global_asset('frontend')}}/css/magnific-popup.css">
-    <link rel="stylesheet" href="{{global_asset('frontend')}}/css/fontawesome.css ">
+    <link rel="stylesheet" href="{{global_asset('frontend')}}/css/fontawesome.css">
     <link rel="stylesheet" href="{{global_asset('frontend')}}/css/themify-icons.css">
     <link rel="stylesheet" href="{{global_asset('frontend')}}/css/flaticon.css">
     <link rel="stylesheet" href="{{global_asset('frontend')}}/css/nice-select.css">

@@ -83,6 +83,7 @@ Route::middleware(saasMiddleware())->group(function () {
                     Route::get('/',                 'index')->name('online-admissions.index')->middleware('PermissionCheck:admission_read');
                     Route::any('/search',           'search')->name('online-admissions.search')->middleware('PermissionCheck:admission_read');
                     Route::get('edit/{id}',         'edit')->name('online-admissions.edit')->middleware('PermissionCheck:admission_update');
+                    Route::get('download/{id}',     'downloadPdf')->name('online-admissions.download')->middleware('PermissionCheck:admission_read');
                     Route::post('/store',           'store')->name('online-admissions.store')->middleware('PermissionCheck:admission_update', 'DemoCheck');
                     Route::delete('/delete/{id}',   'delete')->name('online-admissions.delete')->middleware('PermissionCheck:admission_delete', 'DemoCheck');
                 });

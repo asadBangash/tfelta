@@ -14,6 +14,7 @@ use App\Repositories\Academic\SectionRepository;
 use App\Repositories\Academic\ClassSetupRepository;
 use App\Repositories\StudentInfo\OnlineAdmissionRepository;
 use App\Repositories\StudentInfo\StudentCategoryRepository;
+use PDF;
 
 class OnlineAdmissionController extends Controller
 {
@@ -93,6 +94,26 @@ class OnlineAdmissionController extends Controller
             return redirect()->route('online-admissions.index')->with('success', $result['message']);
         }
         return back()->with('danger', $result['message']);
+    }
+
+    public function downloadPdf($id)
+    {
+        $admission = $this->repo->show($id);
+        if (! $admission) {
+            abort(404);
+        }
+
+        $admission->load(['class', 'section', 'session', 'shift', 'gender', 'religion', 'blood', 'student_img']);
+
+        $pdf = PDF::loadView('backend.student-info.online-admission.admission-form-pdf', [
+            'admission' => $admission,
+            'courseOptions' => config('admission_courses', []),
+        ]);
+        $pdf->setPaper('a4', 'portrait');
+
+        $name = 'admission-form-'.($admission->reference_no ?: $admission->id).'.pdf';
+
+        return $pdf->download($name);
     }
 
     public function delete($id)

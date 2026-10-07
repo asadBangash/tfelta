@@ -250,6 +250,27 @@ class FrontendRepository implements FrontendInterface
             $row->spoken_lang_at_home = $request->spoken_lang_at_home;
             $row->residance_address = $request->residance_address;
             $row->father_nationality = $request->father_nationality;
+            $row->blood_group_id = $request->blood_group ?: null;
+            $row->age = $request->age;
+            $row->qualification = $request->qualification;
+            $row->phone_secondary = $request->phone_secondary;
+            $row->school_workplace = $request->school_workplace;
+            $row->father_cnic = $request->father_cnic;
+            $row->guardian_cnic = $request->guardian_cnic;
+            $row->emergency_contact = $request->emergency_contact;
+            $row->selected_courses = [
+                'computer' => $request->input('courses_computer', []),
+                'computer_other' => $request->courses_computer_other,
+                'english' => $request->input('courses_english', []),
+                'tuition' => [
+                    'enabled' => (bool) $request->courses_tuition_enabled,
+                    'grade' => $request->tuition_grade,
+                    'subjects' => $request->tuition_subjects,
+                ],
+                'special' => $request->input('courses_special', []),
+            ];
+            $row->declaration_acknowledged = $request->boolean('admission_declaration_ack');
+            $row->rules_acknowledged = $request->boolean('admission_rules_ack');
             $row->save();
 
             $data = [];

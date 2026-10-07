@@ -213,7 +213,7 @@ if (!function_exists('globalAsset')) {
             try {
                 if (setting('file_system') == "s3" && Storage::disk('s3')->exists($path) && $path != "") {
                     return Storage::disk('s3')->url($path);
-                } else if (setting('file_system') == "local" && file_exists(@$path)) {
+                } else if (setting('file_system') == "local" && $path != "" && file_exists(public_path($path))) {
                     return url($path);
                 } else {
                     if ($default_image == null) {
@@ -791,6 +791,22 @@ if (!function_exists('admission_required_fields')) {
         } catch (\Throwable $th) {
             return [];
         }
+    }
+}
+
+if (!function_exists('admission_setting_field_label')) {
+    function admission_setting_field_label(string $field): string
+    {
+        $labels = [
+            'student_cnic_form_b' => 'student_cnic_form_b',
+            'cpr_no' => 'student_cnic_form_b',
+            'admission_declaration_ack' => 'admission_declaration_ack',
+            'admission_rules_ack' => 'admission_rules_ack',
+        ];
+
+        $key = $labels[$field] ?? $field;
+
+        return ___('frontend.'.$key);
     }
 }
 

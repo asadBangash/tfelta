@@ -105,7 +105,7 @@
                                     
                                         <input type="hidden" name="id[]" value="{{$field->id}}">
                                     <tr id="row_{{ $field->id }}">
-                                        <td>{{ucwords(str_replace('_', ' ',___('frontend.'.$field->field)))}} @if($field->is_system_required) <span class="text-danger">*</span> @endif</td>
+                                        <td>{{ admission_setting_field_label($field->field) }} @if($field->is_system_required) <span class="text-danger">*</span> @endif</td>
                                         <td>
                                             <input type="hidden" class="visibility" name="visibility[]" value="{{ $field->is_show ? 1 : 0 }}">
                                             <div class="toggle-checkbox-wrapper">

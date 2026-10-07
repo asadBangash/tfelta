@@ -433,6 +433,27 @@
                                 </div>
 
                                 <div class="col-md-3 mb-3">
+                                    <label class="form-label">{{ ___('frontend.father_cnic') }}</label>
+                                    <input class="form-control ot-input" name="father_cnic" value="{{ old('father_cnic', @$data['student']->father_cnic) }}">
+                                </div>
+                                <div class="col-md-3 mb-3">
+                                    <label class="form-label">{{ ___('frontend.guardian_cnic') }}</label>
+                                    <input class="form-control ot-input" name="guardian_cnic" value="{{ old('guardian_cnic', @$data['student']->guardian_cnic) }}">
+                                </div>
+                                <div class="col-md-3 mb-3">
+                                    <label class="form-label">{{ ___('frontend.emergency_contact') }}</label>
+                                    <input class="form-control ot-input" name="emergency_contact" value="{{ old('emergency_contact', @$data['student']->emergency_contact) }}">
+                                </div>
+                                <div class="col-md-3 mb-3">
+                                    <label class="form-label">{{ ___('frontend.qualification') }}</label>
+                                    <input class="form-control ot-input" name="qualification" value="{{ old('qualification', @$data['student']->qualification) }}">
+                                </div>
+                                <div class="col-md-3 mb-3">
+                                    <label class="form-label">{{ ___('frontend.school_workplace') }}</label>
+                                    <input class="form-control ot-input" name="school_workplace" value="{{ old('school_workplace', @$data['student']->school_workplace) }}">
+                                </div>
+
+                                <div class="col-md-3 mb-3">
                                     <label for="exampleDataList" class="form-label ">{{ ___('frontend.Student_Sponken_Language_At_Home') }} <span
                                             class="fillable">*</span></label>
                                     <input class="form-control ot-input @error('spoken_lang_at_home') is-invalid @enderror"
